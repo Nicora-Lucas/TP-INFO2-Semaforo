@@ -1,0 +1,9 @@
+# duracion de las luces (en segundos)
+
+t_Ro 82
+
+t_RoAm 5
+
+t_Am 3
+
+t_Ve 10
