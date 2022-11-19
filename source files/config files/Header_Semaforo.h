@@ -12,11 +12,12 @@
 
             typedef enum
             {
+                ST_Emergency,
                 ST_Red,
                 ST_RednAmber,
                 ST_Green,
                 ST_Yellow,
-                ST_Emergency
+                Cant_de_estados
 
             }LightStates_t;
 
@@ -52,58 +53,22 @@
 
 
 
-        // Funcion      :   F_Red
+            // Funcion      :   F_state_manager
 
             // @Param       :   Data_state configurada.
             //                  LightStates_t Estado en curso.
 
-            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
+            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados.
 
-            LightStates_t F_Red (data_state, LightStates_t color);
-
-
-
-        // Funcion      :   F_RednAmber
-
-            // @Param       :   Data_state configurada.
-            //                  LightStates_t Estado en curso.
-
-            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
-
-            LightStates_t F_RednAmber (data_state, LightStates_t color);
-
-
-
-        // Funcion      :   F_Green
-
-            // @Param       :   Data_state configurada.
-            //                  LightStates_t Estado en curso.
-
-            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
-
-            LightStates_t F_Green (data_state, LightStates_t color);
-
-
-
-        // Funcion      :   F_Yellow
-
-            // @Param       :   Data_state configurada.
-            //                  LightStates_t Estado en curso.
-
-            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
-
-            LightStates_t F_Yellow (data_state, LightStates_t color);
-
+            LightStates_t F_state_manager (data_state*,LightStates_t);
 
 
         // Funcion      :   F_Emergency
 
-            // @Param       :   Data_state configurada.
-            //                  LightStates_t Estado en curso.
-
+            // @Param       :   Data_state configurada
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Emergency (data_state, LightStates_t color);
+            LightStates_t F_Emergency (data_state);
 
 
 

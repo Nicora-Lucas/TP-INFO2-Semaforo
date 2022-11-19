@@ -1,64 +1,41 @@
 
 #include "config files\Header_Semaforo.h"
-#include <string.h>
+
 
     data_state inicio(void)
     {
 
 
         FILE *Fp;
-
-        char cadena[40],*key,*val,i;
-
         data_state aux;
 
-        char claves[4][10] = {"t_Ro","t_RoAm","t_Ve","t_Am"};
+        // Rutina de error
 
-
-            if ((Fp = fopen("config files/Config.txt","rb")) == NULL)
+            if ((Fp = fopen("config files/Config.txt","rt")) == NULL)
             {
-                    printf("No se encontro o no se puede abrir el archivo de configuracion");
+
+                if ((Fp = fopen("config files/Config.txt","wt+")) == NULL)
+                {
                     fclose(Fp);
                     return aux;
-            }
-
-            fgets(cadena,40,Fp);
-
-            do
-            {
-              key = cadena;
-              val = key;
-
-                if ( *key != '#' && strlen(cadena) >= 0 )
-                {
-
-                    //Separo el nombre(clave) y valor
-
-                    while ( *val != ' ')
-                    {
-                        val++;
-                    }
-
-                    *val = 0;
-                     val++;
-
-                    //Compruebo la clave que es, y le asigno su respectiva posicion en el vector
-
-                    for (i = 0; i < 4; i++)
-                    {
-                            if (!strcmp(key,claves[i]))
-                                aux.state_time[i] = (char) atoi(val);
-                    }
-
-
-
 
                 }
 
-                fgets(cadena,40,Fp);
+                aux.actual_time     = 0;
+
+                aux.state_time[0]   = 82;
+                aux.state_time[1]   =  5;
+                aux.state_time[2]   =  3;
+                aux.state_time[3]   = 10;
+
+                aux.emergency       = 0;
+
+                fwrite(&aux,sizeof(data_state),1,Fp);
+
 
             }
-            while (!feof(Fp));
+
+            fread(&aux,sizeof(data_state),1,Fp);
 
 
 
@@ -66,180 +43,52 @@
     };
 
 
-    // Funcion de Emergencia
-
-        LightStates_t F_Emergency (data_state aux, LightStates_t color)
+        LightStates_t F_state_manager (data_state *aux, LightStates_t set_color)
             {
 
-                if (aux.emergency)
-                    {
-                        /*
-                            Rutina de emergencia
-                        */
+                //Estado de emergencia
 
-                        return color = ST_Emergency;
-                    }
-                else color = ST_Red;
-            }
+                    if ( aux->emergency == 1 ) return set_color = ST_Emergency;
 
+                    // El valor de data_state.emergency se modificara de forma externa.
+                    // Para no frenar el ciclo.
 
 
+                //Temporizador
 
+                    aux->actual_time--;
 
+                //Ciclo de estados
 
-        ///Funciones de las luces
 
+                    if (aux->state_time[set_color] <= 0)
+                        {
 
-            // Funcion Luz roja
+                            // inicializacion del temporizador
 
+                                aux->actual_time = aux->state_time[set_color];
 
+                                //Uso punteros para asegurar que al salir de la funcion los datos no se reseten.
 
 
-                LightStates_t F_Red (data_state aux, LightStates_t color)
-                {
-                    //reduccion del temporizador
+                            //Ultimo estado
 
-                    while (aux.actual_time > 0)
-                    {
-                        if (aux.emergency) return color = ST_Emergency;
+                            LightStates_t Last_state = Cant_de_estados;
 
+                            //Comprueba si no se encuentra en el ultimo estado
 
-                        /*
+                            if ( set_color < Last_state )
+                                    set_color++;        // Cambia al siguiente estado
+                                else
+                                    set_color = ST_Red; // resetea al primer estado no especial,
+                                                        // el estado de emergencia no está en el ciclo.
 
-                            Codigo para encender la luz roja y otros
 
-                        */
 
-                        //Cambio al la siguiente luz
+                        }
 
-                            if (aux.actual_time <= 0)
-                            {
-                                color = ST_RednAmber;
-                                aux.actual_time = aux.state_time[color];
-                            }
 
-                        aux.actual_time--;  //reduccion del temporizador
-                    }
-
-                    return color;
-
-                }
-
-
-
-
-
-
-
-            // Funcion Roja y amarilla
-
-
-
-
-                LightStates_t F_RednAmber (data_state aux, LightStates_t color)
-                {
-                    //reduccion del temporizador
-
-                    while (aux.actual_time > 0)
-                    {
-                        if (aux.emergency) return color = ST_Emergency;
-
-
-                        /*
-
-                            Codigo para encender la luz roja y amarilla, y otros
-
-                        */
-
-                        //Cambio al la siguiente luz
-
-                            if (aux.actual_time <= 0)
-                            {
-                                color = ST_Green;
-                                aux.actual_time = aux.state_time[color];
-                            }
-
-                        aux.actual_time--;  //reduccion del temporizador
-                    }
-
-                    return color;
-
-                }
-
-
-
-
-
-
-            //Funcion luz verde
-
-
-
-
-                LightStates_t F_Green (data_state aux, LightStates_t color)
-                {
-
-
-                    while (aux.actual_time > 0)
-                    {
-                        if (aux.emergency) return color = ST_Emergency;
-
-
-                        /*
-
-                            Codigo para encender la luz verde y otros
-
-                        */
-
-                        //Cambio al la siguiente luz
-
-                            if (aux.actual_time <= 0)
-                            {
-                                color = ST_Yellow;
-                                aux.actual_time = aux.state_time[color];
-                            }
-
-                        aux.actual_time--;  //reduccion del temporizador
-                    }
-
-                    return color;
-
-                }
-
-
-
-           // Funcion luz Amarilla
-
-
-
-                LightStates_t F_Yellow (data_state aux, LightStates_t color)
-                {
-                    //reduccion del temporizador
-
-                    while (aux.actual_time > 0)
-                    {
-                        if (aux.emergency) return color = ST_Emergency;
-
-
-                        /*
-
-                            Codigo para encender la luz roja y otros
-
-                        */
-
-                        //Cambio al la siguiente luz
-
-                            if (aux.actual_time <= 0)
-                            {
-                                color = ST_Red;
-                                aux.actual_time = aux.state_time[color];
-                            }
-
-                        aux.actual_time--;  //reduccion del temporizador
-                    }
-
-                    return color;
-
+                    return set_color;
                 }
 
 
