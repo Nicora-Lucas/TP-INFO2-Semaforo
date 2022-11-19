@@ -1,4 +1,7 @@
 # TP-INFO2-Semaforo
+
+``Nota: en la carpeta source files hay estan las funciones actualizadas en el read.me .``
+
 Funcionamiento de un semáforo en un cruce entre calles.
 
 ## Memoria descriptiva
