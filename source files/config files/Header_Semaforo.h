@@ -54,46 +54,56 @@
 
         // Funcion      :   F_Red
 
-            // @Param       :   Data_state configurada
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
+
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Red (data_state);
+            LightStates_t F_Red (data_state, LightStates_t color);
 
 
 
         // Funcion      :   F_RednAmber
 
-            // @Param       :   Data_state configurada
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
+
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_RednAmber (data_state);
+            LightStates_t F_RednAmber (data_state, LightStates_t color);
 
 
 
         // Funcion      :   F_Green
 
-            // @Param       :   Data_state configurada
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
+
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Green (data_state);
+            LightStates_t F_Green (data_state, LightStates_t color);
 
 
 
         // Funcion      :   F_Yellow
 
-            // @Param       :   Data_state configurada
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
+
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Yellow (data_state);
+            LightStates_t F_Yellow (data_state, LightStates_t color);
 
 
 
         // Funcion      :   F_Emergency
 
-            // @Param       :   Data_state configurada
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
+
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Emergency (data_state);
+            LightStates_t F_Emergency (data_state, LightStates_t color);
 
 
 

@@ -1,44 +1,245 @@
-/*
-#include "config files\Header_Semaforo.h"
 
+#include "config files\Header_Semaforo.h"
+#include <string.h>
 
     data_state inicio(void)
     {
 
 
         FILE *Fp;
+
+        char cadena[40],*key,*val,i;
+
         data_state aux;
 
+        char claves[4][10] = {"t_Ro","t_RoAm","t_Ve","t_Am"};
 
 
-            if ((Fp = fopen("config files/Config.txt","rt")) == NULL)
+            if ((Fp = fopen("config files/Config.txt","rb")) == NULL)
             {
-                if ((Fp = fopen("config files/Config.txt","wt+")) == NULL)
+                    printf("No se encontro o no se puede abrir el archivo de configuracion");
+                    fclose(Fp);
+                    return aux;
+            }
+
+            fgets(cadena,40,Fp);
+
+            do
+            {
+              key = cadena;
+              val = key;
+
+                if ( *key != '#' && strlen(cadena) >= 0 )
                 {
 
-                    return aux;
+                    //Separo el nombre(clave) y valor
+
+                    while ( *val != ' ')
+                    {
+                        val++;
+                    }
+
+                    *val = 0;
+                     val++;
+
+                    //Compruebo la clave que es, y le asigno su respectiva posicion en el vector
+
+                    for (i = 0; i < 4; i++)
+                    {
+                            if (!strcmp(key,claves[i]))
+                                aux.state_time[i] = (char) atoi(val);
+                    }
+
+
+
 
                 }
 
+                fgets(cadena,40,Fp);
+
             }
+            while (!feof(Fp));
 
 
-
-            aux.actual_time = 0;
-
-            for( int i=0; i<4; i++ ) aux.state_time[i] = i*10 + 15;
-            aux.emergency   = 0;
 
             return aux;
     };
 
-            LightStates_t F_Red (data_state aux){return 1;}
 
-            LightStates_t F_RednAmber (data_state aux){return 2;}
+    // Funcion de Emergencia
 
-            LightStates_t F_Green (data_state aux){return 3;}
+        LightStates_t F_Emergency (data_state aux, LightStates_t color)
+            {
 
-            LightStates_t F_Yellow (data_state aux){return 4;}
+                if (aux.emergency)
+                    {
+                        /*
+                            Rutina de emergencia
+                        */
 
-            LightStates_t F_Emergency (data_state aux){return 5;}
-*/
+                        return color = ST_Emergency;
+                    }
+                else color = ST_Red;
+            }
+
+
+
+
+
+
+        ///Funciones de las luces
+
+
+            // Funcion Luz roja
+
+
+
+
+                LightStates_t F_Red (data_state aux, LightStates_t color)
+                {
+                    //reduccion del temporizador
+
+                    while (aux.actual_time > 0)
+                    {
+                        if (aux.emergency) return color = ST_Emergency;
+
+
+                        /*
+
+                            Codigo para encender la luz roja y otros
+
+                        */
+
+                        //Cambio al la siguiente luz
+
+                            if (aux.actual_time <= 0)
+                            {
+                                color = ST_RednAmber;
+                                aux.actual_time = aux.state_time[color];
+                            }
+
+                        aux.actual_time--;  //reduccion del temporizador
+                    }
+
+                    return color;
+
+                }
+
+
+
+
+
+
+
+            // Funcion Roja y amarilla
+
+
+
+
+                LightStates_t F_RednAmber (data_state aux, LightStates_t color)
+                {
+                    //reduccion del temporizador
+
+                    while (aux.actual_time > 0)
+                    {
+                        if (aux.emergency) return color = ST_Emergency;
+
+
+                        /*
+
+                            Codigo para encender la luz roja y amarilla, y otros
+
+                        */
+
+                        //Cambio al la siguiente luz
+
+                            if (aux.actual_time <= 0)
+                            {
+                                color = ST_Green;
+                                aux.actual_time = aux.state_time[color];
+                            }
+
+                        aux.actual_time--;  //reduccion del temporizador
+                    }
+
+                    return color;
+
+                }
+
+
+
+
+
+
+            //Funcion luz verde
+
+
+
+
+                LightStates_t F_Green (data_state aux, LightStates_t color)
+                {
+
+
+                    while (aux.actual_time > 0)
+                    {
+                        if (aux.emergency) return color = ST_Emergency;
+
+
+                        /*
+
+                            Codigo para encender la luz verde y otros
+
+                        */
+
+                        //Cambio al la siguiente luz
+
+                            if (aux.actual_time <= 0)
+                            {
+                                color = ST_Yellow;
+                                aux.actual_time = aux.state_time[color];
+                            }
+
+                        aux.actual_time--;  //reduccion del temporizador
+                    }
+
+                    return color;
+
+                }
+
+
+
+           // Funcion luz Amarilla
+
+
+
+                LightStates_t F_Yellow (data_state aux, LightStates_t color)
+                {
+                    //reduccion del temporizador
+
+                    while (aux.actual_time > 0)
+                    {
+                        if (aux.emergency) return color = ST_Emergency;
+
+
+                        /*
+
+                            Codigo para encender la luz roja y otros
+
+                        */
+
+                        //Cambio al la siguiente luz
+
+                            if (aux.actual_time <= 0)
+                            {
+                                color = ST_Red;
+                                aux.actual_time = aux.state_time[color];
+                            }
+
+                        aux.actual_time--;  //reduccion del temporizador
+                    }
+
+                    return color;
+
+                }
+
+
