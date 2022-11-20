@@ -11,7 +11,7 @@ int main()
 
         LightStates_t estado = ST_Red;
 
-        LightStates_t (*FuntionSelec[])(data_state, LightStates_t) = {F_Red,F_RednAmber,F_Green,F_Yellow,F_Emergency};
+        LightStates_t (*FuntionSelec[])(data_state*, LightStates_t) = {F_Red,F_RednAmber,F_Green,F_Yellow,F_Emergency};
 
         data_config = inicio();
 
@@ -20,7 +20,7 @@ int main()
 
     /// Maquina de estados/Selector de estados
 
-        while(1) estado = (*FuntionSelec[estado])(data_config,estado);
+        while(1) estado = (*FuntionSelec[estado])(&data_config,estado);
 
 }
 

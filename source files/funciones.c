@@ -8,7 +8,8 @@
 
         FILE *Fp;
 
-        char cadena[40],*key,*val,i;
+        char cadena[40],*key,*val;
+        unsigned char i;
 
         data_state aux;
 
@@ -68,18 +69,20 @@
 
     // Funcion de Emergencia
 
-        LightStates_t F_Emergency (data_state aux, LightStates_t color)
+        LightStates_t F_Emergency (data_state *aux, LightStates_t color)
             {
 
-                if (aux.emergency)
+                if (aux->emergency)
                     {
                         /*
                             Rutina de emergencia
                         */
 
-                        return color = ST_Emergency;
+                        color = ST_Emergency;
                     }
                 else color = ST_Red;
+
+                return color;
             }
 
 
@@ -95,13 +98,11 @@
 
 
 
-                LightStates_t F_Red (data_state aux, LightStates_t color)
+                LightStates_t F_Red (data_state *aux, LightStates_t color)
                 {
-                    //reduccion del temporizador
 
-                    while (aux.actual_time > 0)
-                    {
-                        if (aux.emergency) return color = ST_Emergency;
+
+                        if (aux->emergency) return color = ST_Emergency;
 
 
                         /*
@@ -110,24 +111,18 @@
 
                         */
 
+                            aux->actual_time--;  //reduccion del temporizador
+
                         //Cambio al la siguiente luz
 
-                            if (aux.actual_time <= 0)
+                            if (aux->actual_time <= 0)
                             {
                                 color = ST_RednAmber;
-                                aux.actual_time = aux.state_time[color];
+                                aux->actual_time = aux->state_time[color];
                             }
 
-                        aux.actual_time--;  //reduccion del temporizador
-                    }
-
-                    return color;
-
+                    return color; // si el temporizador no llega a 0, el estado se mantiene.
                 }
-
-
-
-
 
 
 
@@ -136,13 +131,11 @@
 
 
 
-                LightStates_t F_RednAmber (data_state aux, LightStates_t color)
+                LightStates_t F_RednAmber (data_state *aux, LightStates_t color)
                 {
-                    //reduccion del temporizador
 
-                    while (aux.actual_time > 0)
-                    {
-                        if (aux.emergency) return color = ST_Emergency;
+
+                        if (aux->emergency) return color = ST_Emergency;
 
 
                         /*
@@ -151,19 +144,20 @@
 
                         */
 
+
+                        aux->actual_time--;  //reduccion del temporizador
+
+
                         //Cambio al la siguiente luz
 
-                            if (aux.actual_time <= 0)
+                            if (aux->actual_time <= 0)
                             {
                                 color = ST_Green;
-                                aux.actual_time = aux.state_time[color];
+                                aux->actual_time = aux->state_time[color];
                             }
 
-                        aux.actual_time--;  //reduccion del temporizador
-                    }
 
-                    return color;
-
+                    return color; // si el temporizador no llega a 0, el estado se mantiene.
                 }
 
 
@@ -175,15 +169,11 @@
 
 
 
-
-                LightStates_t F_Green (data_state aux, LightStates_t color)
+                LightStates_t F_Green (data_state *aux, LightStates_t color)
                 {
 
-
-                    while (aux.actual_time > 0)
-                    {
-                        if (aux.emergency) return color = ST_Emergency;
-
+                        if (aux->emergency)
+                            return color = ST_Emergency;
 
                         /*
 
@@ -191,34 +181,36 @@
 
                         */
 
+
+                        aux->actual_time--;  //reduccion del temporizador
+
+
                         //Cambio al la siguiente luz
 
-                            if (aux.actual_time <= 0)
+                        if (aux->actual_time <= 0)
                             {
                                 color = ST_Yellow;
-                                aux.actual_time = aux.state_time[color];
+                                aux->actual_time = aux->state_time[color];
                             }
 
-                        aux.actual_time--;  //reduccion del temporizador
-                    }
 
-                    return color;
 
+                    return color; // si el temporizador no llega a 0, el estado se mantiene.
                 }
+
+
 
 
 
            // Funcion luz Amarilla
 
 
-
-                LightStates_t F_Yellow (data_state aux, LightStates_t color)
+                LightStates_t F_Yellow (data_state *aux, LightStates_t color)
                 {
-                    //reduccion del temporizador
 
-                    while (aux.actual_time > 0)
-                    {
-                        if (aux.emergency) return color = ST_Emergency;
+
+
+                        if (aux->emergency) return color = ST_Emergency;
 
 
                         /*
@@ -227,19 +219,20 @@
 
                         */
 
+
+                        aux->actual_time--;  //reduccion del temporizador
+
+
                         //Cambio al la siguiente luz
 
-                            if (aux.actual_time <= 0)
+                            if (aux->actual_time <= 0)
                             {
                                 color = ST_Red;
-                                aux.actual_time = aux.state_time[color];
+                                aux->actual_time = aux->state_time[color];
                             }
 
-                        aux.actual_time--;  //reduccion del temporizador
-                    }
 
-                    return color;
-
+                    return color; // si el temporizador no llega a 0, el estado se mantiene.
                 }
 
 

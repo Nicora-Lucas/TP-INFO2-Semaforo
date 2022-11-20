@@ -59,7 +59,7 @@
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Red (data_state, LightStates_t color);
+            LightStates_t F_Red (data_state*, LightStates_t color);
 
 
 
@@ -70,7 +70,7 @@
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_RednAmber (data_state, LightStates_t color);
+            LightStates_t F_RednAmber (data_state*, LightStates_t color);
 
 
 
@@ -81,7 +81,7 @@
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Green (data_state, LightStates_t color);
+            LightStates_t F_Green (data_state*, LightStates_t color);
 
 
 
@@ -92,7 +92,7 @@
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Yellow (data_state, LightStates_t color);
+            LightStates_t F_Yellow (data_state*, LightStates_t color);
 
 
 
@@ -103,7 +103,7 @@
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Emergency (data_state, LightStates_t color);
+            LightStates_t F_Emergency (data_state*, LightStates_t color);
 
 
 
