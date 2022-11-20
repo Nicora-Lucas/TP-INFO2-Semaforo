@@ -32,107 +32,118 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
 
   ```c
 
-  #ifndef HEADER_SEMAFORO
-  #define HEADER_SEMAFORO
+#ifndef HEADER_SEMAFORO
+#define HEADER_SEMAFORO
 
-      #include <stdio.h>
-      #include <stdlib.h>
-
-
-      /// Tipos de datos
+    #include <stdio.h>
+    #include <stdlib.h>
 
 
-          //Etiquetas de los Estados
-
-              typedef enum
-              {
-                  ST_Red,
-                  ST_RednAmber,
-                  ST_Green,
-                  ST_Yellow,
-                  ST_Emergency
-
-              }LightStates_t;
+    /// Tipos de datos
 
 
+        //Etiquetas de los Estados
 
-          // Estructura de datos a configurar
+            typedef enum
+            {
+                ST_Red,
+                ST_RednAmber,
+                ST_Green,
+                ST_Yellow,
+                ST_Emergency
 
-              typedef struct
-                      {
-
-                          char actual_time;       // Tiempo transcurrido por cada estado
-                                                  // ( Al cambiar de estado se reinicia )
-
-                          char state_time[4];     // Tiempo maximo de duracion de cada estado
-
-
-                          char emergency;   // se utilizara como variable booleana entre 0 y 1
-
-                      }data_state;
+            }LightStates_t;
 
 
 
-      ///Funciones
+        // Estructura de datos a configurar
+
+            typedef struct
+                    {
+
+                        char actual_time;       // Tiempo transcurrido por cada estado
+                                                // ( Al cambiar de estado se reinicia )
+
+                        char state_time[4];     // Tiempo maximo de duracion de cada estado
+
+
+                        char emergency;   // se utilizara como variable booleana entre 0 y 1
+
+                    }data_state;
 
 
 
-          // Funcion      :   Inicio
-
-              // @Param       :   Ninguno
-              // @Devuelve    :   Data_state estructura de con los tiempos de cada estado configurados
-
-              data_state inicio(void);
+    ///Funciones
 
 
 
-          // Funcion      :   F_Red
+        // Funcion      :   Inicio
 
-              // @Param       :   Data_state configurada
-              // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
+            // @Param       :   Ninguno
+            // @Devuelve    :   Data_state estructura de con los tiempos de cada estado configurados
 
-              LightStates_t F_Red (data_state);
-
-
-
-          // Funcion      :   F_RednAmber
-
-              // @Param       :   Data_state configurada
-              // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
-
-              LightStates_t F_RednAmber (data_state);
+            data_state inicio(void);
 
 
 
-          // Funcion      :   F_Green
+        // Funcion      :   F_Red
 
-              // @Param       :   Data_state configurada
-              // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
 
-              LightStates_t F_Green (data_state);
+            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-
-
-          // Funcion      :   F_Yellow
-
-              // @Param       :   Data_state configurada
-              // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
-
-              LightStates_t F_Yellow (data_state);
+            LightStates_t F_Red (data_state*, LightStates_t color);
 
 
 
-          // Funcion      :   F_Emergency
+        // Funcion      :   F_RednAmber
 
-              // @Param       :   Data_state configurada
-              // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
 
-              LightStates_t F_Emergency (data_state);
+            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
+
+            LightStates_t F_RednAmber (data_state*, LightStates_t color);
+
+
+
+        // Funcion      :   F_Green
+
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
+
+            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
+
+            LightStates_t F_Green (data_state*, LightStates_t color);
+
+
+
+        // Funcion      :   F_Yellow
+
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
+
+            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
+
+            LightStates_t F_Yellow (data_state*, LightStates_t color);
+
+
+
+        // Funcion      :   F_Emergency
+
+            // @Param       :   Data_state configurada.
+            //                  LightStates_t Estado en curso.
+
+            // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
+
+            LightStates_t F_Emergency (data_state*, LightStates_t color);
 
 
 
 
-  #endif // HEADER_SEMAFORO
+#endif // HEADER_SEMAFORO
+
 
 
   ```
@@ -154,14 +165,17 @@ int main()
         data_state data_config;         // estructura
 
         LightStates_t estado = ST_Red;
-        LightStates_t (*FuntionSelec[])(data_state) = {F_Red,F_RednAmber,F_Green,F_Yellow,F_Emergency};
+
+        LightStates_t (*FuntionSelec[])(data_state*, LightStates_t) = {F_Red,F_RednAmber,F_Green,F_Yellow,F_Emergency};
 
         data_config = inicio();
 
+        //inicialización del temporizador
+            data_config.actual_time = data_config.state_time[0];
 
     /// Maquina de estados/Selector de estados
 
-        while(1) estado = (*FuntionSelec[estado])(data_config);
+        while(1) estado = (*FuntionSelec[estado])(&data_config,estado);
 
 }
 
