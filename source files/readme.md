@@ -84,21 +84,22 @@
 
     // Funcion de Emergencia
 
-        LightStates_t F_Emergency (data_state aux, LightStates_t color)
-            {
+            LightStates_t F_Emergency (data_state *aux, LightStates_t color)
+                {
 
-                if (aux.emergency)
-                    {
-                        /*
-                            Rutina de emergencia
-                        */
+                    if (aux->emergency)
+                        {
+                            /*
+                                Rutina de emergencia
+                            */
 
-                        return color = ST_Emergency;
-                    }
-                else color = ST_Red;
-            }
+                            color = ST_Emergency;
+                        }
+                    else color = ST_Red;
 
-
+                    return color;
+                }
+            
 ```
 
 
@@ -117,13 +118,19 @@ A modo de ejemplo pongo una, porque las demas son practicamente iguales cambiand
 
 
 
-                LightStates_t F_Red (data_state aux, LightStates_t color)
-                {
-                    //reduccion del temporizador
+ ///Funciones de las luces
 
-                    while (aux.actual_time > 0)
-                    {
-                        if (aux.emergency) return color = ST_Emergency;
+
+            // Funcion Luz roja
+
+
+
+
+                LightStates_t F_Red (data_state *aux, LightStates_t color)
+                {
+
+
+                        if (aux->emergency) return color = ST_Emergency;
 
 
                         /*
@@ -132,19 +139,19 @@ A modo de ejemplo pongo una, porque las demas son practicamente iguales cambiand
 
                         */
 
+
+                          aux->actual_time--;  //reduccion del temporizador
+
+
                         //Cambio al la siguiente luz
 
-                            if (aux.actual_time <= 0)
+                            if (aux->actual_time <= 0)
                             {
                                 color = ST_RednAmber;
-                                aux.actual_time = aux.state_time[color];
+                                aux->actual_time = aux->state_time[color];
                             }
 
-                        aux.actual_time--;  //reduccion del temporizador
-                    }
-
-                    return color;
-
+                    return color; // si el temporizador no llega a 0, el estado se mantiene.
                 }
 
 ```
