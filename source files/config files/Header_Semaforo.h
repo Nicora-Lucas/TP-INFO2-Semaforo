@@ -36,7 +36,7 @@
 
 
         // temporizador
-                char actual_time;
+                extern volatile char actual_time;
 
 
     ///Funciones

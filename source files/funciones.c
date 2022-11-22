@@ -3,7 +3,7 @@
 #include <string.h>
 
 
-
+volatile char actual_time;
 
 
 
