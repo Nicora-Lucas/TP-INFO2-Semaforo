@@ -31,7 +31,6 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
 
 
   ```c
-
 #ifndef HEADER_SEMAFORO
 #define HEADER_SEMAFORO
 
@@ -61,9 +60,6 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
             typedef struct
                     {
 
-                        char actual_time;       // Tiempo transcurrido por cada estado
-                                                // ( Al cambiar de estado se reinicia )
-
                         char state_time[4];     // Tiempo maximo de duracion de cada estado
 
 
@@ -71,6 +67,9 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
 
                     }data_state;
 
+
+        // temporizador
+                char actual_time;
 
 
     ///Funciones
@@ -93,7 +92,7 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Red (data_state*, LightStates_t color);
+            LightStates_t F_Red (data_state, LightStates_t color);
 
 
 
@@ -104,7 +103,7 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_RednAmber (data_state*, LightStates_t color);
+            LightStates_t F_RednAmber (data_state, LightStates_t color);
 
 
 
@@ -115,7 +114,7 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Green (data_state*, LightStates_t color);
+            LightStates_t F_Green (data_state, LightStates_t color);
 
 
 
@@ -126,7 +125,7 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Yellow (data_state*, LightStates_t color);
+            LightStates_t F_Yellow (data_state, LightStates_t color);
 
 
 
@@ -137,7 +136,7 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
 
             // @Devuelve    :   LightState_t, tipo de variable enum (int) que define estados
 
-            LightStates_t F_Emergency (data_state*, LightStates_t color);
+            LightStates_t F_Emergency (data_state, LightStates_t color);
 
 
 
@@ -166,16 +165,16 @@ int main()
 
         LightStates_t estado = ST_Red;
 
-        LightStates_t (*FuntionSelec[])(data_state*, LightStates_t) = {F_Red,F_RednAmber,F_Green,F_Yellow,F_Emergency};
+        LightStates_t (*FuntionSelec[])(data_state, LightStates_t) = {F_Red,F_RednAmber,F_Green,F_Yellow,F_Emergency};
 
         data_config = inicio();
 
         //inicialización del temporizador
-            data_config.actual_time = data_config.state_time[0];
+            actual_time = data_config.state_time[0];
 
     /// Maquina de estados/Selector de estados
 
-        while(1) estado = (*FuntionSelec[estado])(&data_config,estado);
+        while(1) estado = (*FuntionSelec[estado])(data_config,estado);
 
 }
 
