@@ -69,7 +69,7 @@ Por otro lado se dispondrá de un sensor de infrarrojos y botón. El primero pod
 
 
         // temporizador
-                char actual_time;
+                extern volatile char actual_time;
 
 
     ///Funciones
