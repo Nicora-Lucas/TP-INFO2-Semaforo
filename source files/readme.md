@@ -7,6 +7,8 @@
 #include "config files\Header_Semaforo.h"
 #include <string.h>
 
+volatile char actual_time;
+
 ```
 ## Funcion de lectura del archivo de configuracion
 
